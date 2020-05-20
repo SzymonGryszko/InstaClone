@@ -10,7 +10,7 @@
             android:id="@+id/profile_center_rel1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_grey_boarder_bottom"
+
             android:padding="10dp">
 
             <LinearLayout
@@ -31,8 +31,8 @@
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:layout_centerVertical="true"
-                        android:src="@mipmap/ic_launcher_round"
                         android:padding="5dp"
+                        android:src="@mipmap/ic_launcher_round"
                         app:civ_border_color="@color/black"
                         app:civ_border_width="1dp" />
 
@@ -46,7 +46,7 @@
                     android:layout_marginEnd="30dp"
                     android:layout_weight="75">
 
-                    <include layout="@layout/snippet_profile_topinfo"/>
+                    <include layout="@layout/snippet_profile_topinfo" />
 
 
                 </RelativeLayout>
@@ -57,6 +57,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/profile_center_lin2"
                 android:layout_below="@id/profile_center_lin1"
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
@@ -74,7 +75,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textEditProfile"
@@ -97,20 +98,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_center_rel1">
+            android:layout_below="@+id/profile_center_rel1"
+            android:id="@+id/profile_center_rel2">
 
-            <GridView
-                android:id="@+id/grid_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:horizontalSpacing="1dp"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="1dp"
-                android:gravity="center">
+            <include layout="@layout/layout_profile_galery_tab" />
 
+        </RelativeLayout>
 
-            </GridView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_center_rel2">
+
+            <include layout="@layout/layout_profile_center_viewpager" />
 
         </RelativeLayout>
 

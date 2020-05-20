@@ -1,10 +1,12 @@
 package com.example.instaclone.profile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.example.instaclone.home.SectionPagerAdapter;
 import com.example.instaclone.utils.BottomNavigationBarHelper;
 import com.example.instaclone.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -30,6 +35,28 @@ public class ProfileActivity extends AppCompatActivity {
         setBottomNavigationMenu();
         drawer = findViewById(R.id.drawer_layout);
         setupToolbar(drawer);
+        setViewPager();
+    }
+
+    private void setViewPager() {
+        ViewPager2 viewPager2 = findViewById(R.id.profileViewPager);
+        viewPager2.setAdapter(new ProfileSectionPagerAdapter(this));
+
+        TabLayout tabLayout = findViewById(R.id.profileTabs);
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0:
+                        tab.setIcon(R.drawable.ic_person);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.ic_message);
+                        break;
+                }
+            }
+        });
+        tabLayoutMediator.attach();
     }
 
     private void setupToolbar(final DrawerLayout drawer) {
