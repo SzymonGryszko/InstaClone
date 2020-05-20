@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="Archive" />
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="Your activity" />
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="Name Tag" />
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="Saved" />
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="Close Friends" />
+        <item
+            android:icon="@drawable/ic_settings"
+            android:title="Discover" />
+    </group>
+</menu>
