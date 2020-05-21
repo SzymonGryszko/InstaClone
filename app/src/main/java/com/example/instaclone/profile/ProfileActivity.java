@@ -9,14 +9,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
-import com.example.instaclone.home.SectionPagerAdapter;
 import com.example.instaclone.utils.BottomNavigationBarHelper;
 import com.example.instaclone.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,7 +28,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class ProfileActivity extends AppCompatActivity {
 
     private Context mContext = ProfileActivity.this;
-    DrawerLayout drawer;
+    private DrawerLayout drawer;
+    private ProgressBar mProgressBar;
+    private TextView editProfileTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,17 @@ public class ProfileActivity extends AppCompatActivity {
         setBottomNavigationMenu();
         drawer = findViewById(R.id.drawer_layout);
         setupToolbar(drawer);
+        mProgressBar = findViewById(R.id.profile_progressbar);
+        mProgressBar.setVisibility(View.GONE);
         setViewPager();
+        editProfileTextView = findViewById(R.id.textEditProfile);
+        editProfileTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setViewPager() {
