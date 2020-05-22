@@ -42,8 +42,8 @@ public class ProfileActivity extends AppCompatActivity {
         setActivityWidgets();
         setBottomNavigationMenu();
         setupToolbar(drawer);
-        setViewPager();
         setProfileImage();
+        setViewPager();
 
     }
 
