@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +23,13 @@ import android.widget.TextView;
 
 import com.example.instaclone.utils.BottomNavigationBarHelper;
 import com.example.instaclone.R;
-import com.example.instaclone.utils.UniversalImageLoader;
+import com.example.instaclone.utils.SquareImageView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -37,8 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private ProgressBar mProgressBar;
     private TextView editProfileTextView;
-    private ImageView profileImage;
-    private ViewPager2 viewPager2;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,39 +53,32 @@ public class ProfileActivity extends AppCompatActivity {
 
         int viewPagerPosition = savedInstanceState == null ? 0 : savedInstanceState.getInt(STATE_POSITION);
 
-        viewPager2 = findViewById(R.id.profileViewPager);
-        viewPager2.setAdapter(new ProfileSectionPagerAdapter(getSupportFragmentManager(), getLifecycle()));
-        viewPager2.setCurrentItem(viewPagerPosition, true);
+
+        viewPager = findViewById(R.id.profileViewPager);
+        viewPager.setAdapter(new ProfileSectionPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
+        viewPager.setCurrentItem(viewPagerPosition, true);
         Log.d(TAG, "onCreate: Profile Activity onCreate");
 
 
         TabLayout tabLayout = findViewById(R.id.profileTabs);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position) {
-                    case 0:
-                        tab.setIcon(R.drawable.ic_person);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.ic_message);
-                        break;
-                }
-            }
-        });
-        tabLayoutMediator.attach();
+        tabLayout.setupWithViewPager(viewPager, true);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_person);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_message);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_POSITION, viewPager2.getCurrentItem());
+        outState.putInt(STATE_POSITION, viewPager.getCurrentItem());
     }
 
     private void setProfileImage() {
-
-        String imageUrl = "instagram.fpoz2-1.fna.fbcdn.net/v/t51.2885-19/11887042_660706700696553_1149097263_a.jpg?_nc_ht=instagram.fpoz2-1.fna.fbcdn.net&_nc_ohc=oevHfjXIKYEAX8RzPpK&oh=24d925e868be408112edc74f8f33d50b&oe=5EF08EAA";
-        UniversalImageLoader.setImage(imageUrl, profileImage, mProgressBar, "https://");
+        CircleImageView profileImage = findViewById(R.id.profile_image);
+        String imageUrl = "https://instagram.fpoz2-1.fna.fbcdn.net/v/t51.2885-19/11887042_660706700696553_1149097263_a.jpg?_nc_ht=instagram.fpoz2-1.fna.fbcdn.net&_nc_ohc=oevHfjXIKYEAX8RzPpK&oh=24d925e868be408112edc74f8f33d50b&oe=5EF08EAA";
+        Picasso.get().load(imageUrl)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(profileImage);
 
     }
 
@@ -91,7 +86,6 @@ public class ProfileActivity extends AppCompatActivity {
         drawer = findViewById(R.id.drawer_layout);
         mProgressBar = findViewById(R.id.profile_progressbar);
         mProgressBar.setVisibility(View.GONE);
-        profileImage = findViewById(R.id.profile_image);
         editProfileTextView = findViewById(R.id.textEditProfile);
         editProfileTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,10 +112,10 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (drawer.isDrawerOpen(Gravity.RIGHT)) {
-                    drawer.closeDrawer(Gravity.RIGHT);
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
                 } else {
-                    drawer.openDrawer(Gravity.RIGHT);
+                    drawer.openDrawer(GravityCompat.END);
                 }
             }
         });
