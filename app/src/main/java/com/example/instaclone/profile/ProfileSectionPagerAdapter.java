@@ -1,24 +1,34 @@
 package com.example.instaclone.profile;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ProfileSectionPagerAdapter extends FragmentStateAdapter {
+    private static final String TAG = "MyApp";
+    Fragment myPicturesFragment;
+    Fragment taggedPicturesFragemnt;
 
-    public ProfileSectionPagerAdapter(@NonNull ProfileActivity fragment) {
-        super(fragment);
+    public ProfileSectionPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+        super(fragmentManager, lifecycle);
+        myPicturesFragment = new MyPicturesFragment();
+        taggedPicturesFragemnt = new TaggedPicturesFragment();
+        Log.d(TAG, "ProfileSectionPagerAdapter: New Profile Section Pager Adapter");
     }
+
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new MyPicturesFragment();
+                return myPicturesFragment;
             default:
-                return new TaggedPicturesFragment();
+                return taggedPicturesFragemnt;
         }
     }
 

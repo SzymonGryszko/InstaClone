@@ -2,6 +2,7 @@ package com.example.instaclone.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.ArrayList;
 
 public class GridImageAdapter extends ArrayAdapter<String> {
+    private static final String TAG = "MyApp";
     private Context mContext;
     private LayoutInflater mInflater;
     private int layoutResource;
@@ -34,11 +36,17 @@ public class GridImageAdapter extends ArrayAdapter<String> {
         this.layoutResource = layoutResource;
         this.mAppend = mAppend;
         this.imgURLs = imgURLs;
+        Log.d(TAG, "GridImageAdapter: creating new adapter");
     }
 
     private static class ViewHolder {
         SquareImageView image;
         ProgressBar mProgressbar;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,7 +59,6 @@ public class GridImageAdapter extends ArrayAdapter<String> {
             viewHolder = new ViewHolder();
             viewHolder.mProgressbar = convertView.findViewById(R.id.gridImageProgressbar);
             viewHolder.image = convertView.findViewById(R.id.gridImageView);
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,11 +30,15 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final String STATE_POSITION = "STATE_POSITION";
+    private static final String TAG = "MyApp";
+
     private Context mContext = ProfileActivity.this;
     private DrawerLayout drawer;
     private ProgressBar mProgressBar;
     private TextView editProfileTextView;
     private ImageView profileImage;
+    private ViewPager2 viewPager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +48,36 @@ public class ProfileActivity extends AppCompatActivity {
         setBottomNavigationMenu();
         setupToolbar(drawer);
         setProfileImage();
-        setViewPager();
 
+        int viewPagerPosition = savedInstanceState == null ? 0 : savedInstanceState.getInt(STATE_POSITION);
+
+        viewPager2 = findViewById(R.id.profileViewPager);
+        viewPager2.setAdapter(new ProfileSectionPagerAdapter(getSupportFragmentManager(), getLifecycle()));
+        viewPager2.setCurrentItem(viewPagerPosition, true);
+        Log.d(TAG, "onCreate: Profile Activity onCreate");
+
+
+        TabLayout tabLayout = findViewById(R.id.profileTabs);
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0:
+                        tab.setIcon(R.drawable.ic_person);
+                        break;
+                    case 1:
+                        tab.setIcon(R.drawable.ic_message);
+                        break;
+                }
+            }
+        });
+        tabLayoutMediator.attach();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_POSITION, viewPager2.getCurrentItem());
     }
 
     private void setProfileImage() {
@@ -70,26 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void setViewPager() {
-        ViewPager2 viewPager2 = findViewById(R.id.profileViewPager);
-        viewPager2.setAdapter(new ProfileSectionPagerAdapter(this));
-
-        TabLayout tabLayout = findViewById(R.id.profileTabs);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position) {
-                    case 0:
-                        tab.setIcon(R.drawable.ic_person);
-                        break;
-                    case 1:
-                        tab.setIcon(R.drawable.ic_message);
-                        break;
-                }
-            }
-        });
-        tabLayoutMediator.attach();
-    }
 
     private void setupToolbar(final DrawerLayout drawer) {
         Toolbar toolbar = findViewById(R.id.profile_settings_toolbar);
