@@ -1,8 +1,10 @@
-package com.example.instaclone;
+package com.example.instaclone.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.instaclone.R;
 
 public class RegisterScreen extends AppCompatActivity {
 
