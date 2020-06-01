@@ -43,10 +43,6 @@ public class RegisterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
 
-        mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-
         context = RegisterScreen.this;
         final FirebaseMethods firebaseMethods = new FirebaseMethods(context);
 
@@ -56,36 +52,65 @@ public class RegisterScreen extends AppCompatActivity {
         mProgressBar = findViewById(R.id.register_progressbar);
         mProgressBar.setVisibility(View.GONE);
 
+
+
+        addNewUserToDatabase(firebaseMethods);
+        initRegistration(firebaseMethods);
+
+
+
+
+    }
+
+    private void addNewUserToDatabase(final FirebaseMethods firebaseMethods) {
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
-                FirebaseUser user = mAuth.getCurrentUser();
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged: user is signed in" + user.getUid());
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (firebaseMethods.checkIfUsernameExists(username, dataSnapshot)) {
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //1st check: Make sure the username is not already in use
+                            if(firebaseMethods.checkIfUsernameExists(username, dataSnapshot)){
                                 append = myRef.push().getKey().substring(3,10);
-                                Log.d(TAG, "onDataChange: username exists, appending random string " + append);
-                                username = username + append;
+                                Log.d(TAG, "onDataChange: username already exists. Appending random string to name: " + append);
                             }
+                            username = username + append;
+
+                            //add new user to the database
+                            firebaseMethods.addNewUser(email, username, "", "", "");
+
+                            Toast.makeText(context, "Signup successful. Sending verification email.", Toast.LENGTH_SHORT).show();
+
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
                     });
 
-
                 } else {
-                    Log.d(TAG, "onAuthStateChanged: user is signed out");
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
+                // ...
             }
         };
+    }
 
+    private void initRegistration(final FirebaseMethods firebaseMethods) {
         Button registerButton = findViewById(R.id.btn_register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,13 +128,22 @@ public class RegisterScreen extends AppCompatActivity {
 
             }
         });
-
-
     }
+
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        Log.d(TAG, "onStart: Register onStart, currentUser is " + currentUser);
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }
