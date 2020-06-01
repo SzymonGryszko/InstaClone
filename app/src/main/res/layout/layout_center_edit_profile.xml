@@ -95,6 +95,8 @@
                     android:layout_marginTop="6dp"
                     android:textSize="14sp"/>
 
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +125,8 @@
                     android:layout_below="@id/profile_email"
                     android:id="@+id/edit_profile_email"
                     android:hint="Enter your email"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:inputType="textEmailAddress"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -140,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/profile_phone"
                     android:id="@+id/edit_profile_phone"
-                    android:hint="Enter your email"
+                    android:hint="Phone number"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -151,14 +154,15 @@
                     android:text="Sex"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:layout_marginStart="4dp" />
+                    android:layout_marginStart="4dp"
+                    android:inputType="phone"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/profile_sex"
                     android:id="@+id/edit_profile_sex"
-                    android:hint="Enter your email"
+                    android:hint="Sex"
                     android:textSize="14sp"/>
 
 

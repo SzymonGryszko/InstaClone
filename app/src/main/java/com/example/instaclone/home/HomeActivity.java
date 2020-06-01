@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
+ //       mAuth.signOut();
 
         setContentView(R.layout.activity_home);
         setBottomNavigationMenu();
