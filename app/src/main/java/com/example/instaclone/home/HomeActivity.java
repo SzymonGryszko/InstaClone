@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.instaclone.login.LoginScreen;
+import com.example.instaclone.login.LoginActivity;
 import com.example.instaclone.utils.BottomNavigationBarHelper;
 import com.example.instaclone.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,7 +18,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -30,8 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
- //       mAuth.signOut();
-
+        
         setContentView(R.layout.activity_home);
         setBottomNavigationMenu();
         setViewPager();
@@ -43,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            Intent intent = new Intent(this, LoginScreen.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }

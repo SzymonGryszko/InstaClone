@@ -1,12 +1,10 @@
 package com.example.instaclone.login;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,15 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.instaclone.R;
-import com.example.instaclone.home.HomeActivity;
 import com.example.instaclone.utils.FirebaseMethods;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginScreen extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginScreen";
 
@@ -37,7 +31,7 @@ public class LoginScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         mAuth = FirebaseAuth.getInstance();
-        context = LoginScreen.this;
+        context = LoginActivity.this;
 
         mEmial = findViewById(R.id.input_email);
         mPassword = findViewById(R.id.input_password);
@@ -45,7 +39,6 @@ public class LoginScreen extends AppCompatActivity {
 
         mProgressBar.setVisibility(View.GONE);
         initFirebaseLogin();
-
         intiRegisterNewUser();
 
     }
@@ -62,7 +55,7 @@ public class LoginScreen extends AppCompatActivity {
         linkSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreen.this, RegisterScreen.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,7 +71,8 @@ public class LoginScreen extends AppCompatActivity {
                 mProgressBar.setVisibility(View.VISIBLE);
 
                 if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(LoginScreen.this, "Please populate all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Please populate all fields", Toast.LENGTH_SHORT).show();
+                    mProgressBar.setVisibility(View.GONE);
                 } else {
                     new FirebaseMethods(context).loginUser(email, password, mProgressBar);
                 }

@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class RegisterScreen extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterScreen";
 
@@ -43,7 +43,7 @@ public class RegisterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
 
-        context = RegisterScreen.this;
+        context = RegisterActivity.this;
         final FirebaseMethods firebaseMethods = new FirebaseMethods(context);
 
         mUserName = findViewById(R.id.input_fullname);
@@ -72,7 +72,7 @@ public class RegisterScreen extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
                     // User is signed in
@@ -91,8 +91,9 @@ public class RegisterScreen extends AppCompatActivity {
                             //add new user to the database
                             firebaseMethods.addNewUser(email, username, "", "", "");
 
-                            Toast.makeText(context, "Signup successful. Sending verification email.", Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(context, "Registration successful. Sending verification email.", Toast.LENGTH_SHORT).show();
+                            mProgressBar.setVisibility(View.GONE);
+                            mAuth.signOut();
                         }
 
                         @Override
@@ -100,6 +101,8 @@ public class RegisterScreen extends AppCompatActivity {
 
                         }
                     });
+
+                    finish();
 
                 } else {
                     // User is signed out
@@ -120,10 +123,10 @@ public class RegisterScreen extends AppCompatActivity {
                 password = mPassword.getText().toString();
 
                 if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(RegisterScreen.this, "Please populate all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please populate all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     mProgressBar.setVisibility(View.VISIBLE);
-                    firebaseMethods.registerNewUser(email, password, username, mProgressBar);
+                    firebaseMethods.registerNewEmail(email, password, username, mProgressBar);
                 }
 
             }
@@ -143,7 +146,7 @@ public class RegisterScreen extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+            mAuth.removeAuthStateListener(mAuthListener  );
         }
     }
 }

@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 
 import com.example.instaclone.R;
 import com.example.instaclone.home.HomeActivity;
-import com.example.instaclone.login.LoginScreen;
 import com.example.instaclone.model.User;
 import com.example.instaclone.model.UserAccountSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,7 +70,7 @@ public class FirebaseMethods {
         return false;
     }
 
-    public void registerNewUser(String email, String password, String userName, final ProgressBar progressBar) {
+    public void registerNewEmail(String email, String password, String userName, final ProgressBar progressBar) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -82,6 +81,7 @@ public class FirebaseMethods {
                             FirebaseUser user = mAuth.getCurrentUser();
                             assert user != null;
                             userID = user.getUid();
+                            sendVerificationEmail();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -96,6 +96,22 @@ public class FirebaseMethods {
 
     }
 
+    public void sendVerificationEmail() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(context, "Couldn't send verification email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
 
     public void loginUser(String email, String password, final ProgressBar progressBar) {
         mAuth.signInWithEmailAndPassword(email, password)
@@ -108,8 +124,19 @@ public class FirebaseMethods {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
-                            Intent intent = new Intent(context, HomeActivity.class);
-                            context.startActivity(intent);
+                            try {
+                                if (user.isEmailVerified()) {
+                                    Intent intent = new Intent(context, HomeActivity.class);
+                                    context.startActivity(intent);
+                                } else {
+                                    Log.e(TAG, "onComplete: Email is not verified");
+                                    Toast.makeText(context, "Please verify your email first", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                    mAuth.signOut();
+                                }
+                            } catch (NullPointerException e) {
+                                Log.e(TAG, "onComplete: Null pointer exception" + e.getMessage());
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

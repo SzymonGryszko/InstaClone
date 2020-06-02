@@ -80,12 +80,12 @@
                 android:layout_marginLeft="10dp"/>
 
             <TextView
-                android:id="@+id/settings"
+                android:id="@+id/signout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/settingsText"
-                android:text="Settings"
+                android:text="Sign out"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:layout_centerVertical="true"/>

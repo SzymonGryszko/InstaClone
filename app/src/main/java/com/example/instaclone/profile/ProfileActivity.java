@@ -16,17 +16,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 import com.example.instaclone.utils.BottomNavigationBarHelper;
 import com.example.instaclone.R;
-import com.example.instaclone.utils.SquareImageView;
+import com.example.instaclone.utils.ExitDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.squareup.picasso.Callback;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -35,6 +34,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final String STATE_POSITION = "STATE_POSITION";
     private static final String TAG = "MyApp";
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private Context mContext = ProfileActivity.this;
     private DrawerLayout drawer;
@@ -64,12 +66,28 @@ public class ProfileActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager, true);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_person);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_message);
+
+
+        TextView signout = findViewById(R.id.signout);
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openExitDialog();
+            }
+        });
+
+
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_POSITION, viewPager.getCurrentItem());
+    }
+
+    private void openExitDialog() {
+        ExitDialog exitDialog = new ExitDialog();
+        exitDialog.show(getSupportFragmentManager(), "exit_dialog");
     }
 
     private void setProfileImage() {
