@@ -45,10 +45,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MyApp";
 
     private FirebaseAuth mAuth;
-<<<<<<< HEAD
-=======
-    private FirebaseAuth.AuthStateListener mAuthListener;
->>>>>>> a824b68785e5e791c013705f538b509bff66cee0
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
