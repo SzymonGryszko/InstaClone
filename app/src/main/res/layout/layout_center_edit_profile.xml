@@ -30,70 +30,67 @@
                 android:textSize="16sp"
                 android:padding="10dp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/edit_photo_text"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp">
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profile_name"
-                    android:text="Name"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp" />
+                    android:layout_height="wrap_content">
 
-                <EditText
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_profile_name"
+                        android:hint="Full Name"
+                        android:textSize="14sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_name"
-                    android:id="@+id/edit_profile_name"
-                    android:hint="Szymon Gryszko"
-                    android:textSize="14sp"/>
+                    android:layout_height="wrap_content">
 
-                <TextView
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_profile_username"
+                        android:hint="Username"
+                        android:textSize="14sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_profile_name"
-                    android:id="@+id/profile_username"
-                    android:text="Username"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp" />
+                    android:layout_height="wrap_content">
 
-                <EditText
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_profile_website"
+                        android:hint="Website"
+                        android:textSize="14sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_username"
-                    android:id="@+id/edit_profile_username"
-                    android:hint="Grymon"
-                    android:textSize="14sp"/>
+                    android:layout_height="wrap_content">
 
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_profile_bio"
+                        android:hint="Bio"
+                        android:textSize="14sp"/>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_profile_username"
-                    android:id="@+id/edit_profile_website"
-                    android:hint="Website"
-                    android:textColorHint="@color/black"
-                    android:layout_marginTop="6dp"
-                    android:textSize="14sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_profile_website"
-                    android:id="@+id/edit_profile_bio"
-                    android:hint="Bio"
-                    android:textColorHint="@color/black"
-                    android:layout_marginTop="6dp"
-                    android:textSize="14sp"/>
 
 
 
@@ -109,64 +106,36 @@
                     android:textColor="@color/black"
                     android:layout_below="@id/edit_profile_bio"/>
 
-                <TextView
+
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profile_email"
-                    android:layout_below="@id/private_information"
-                    android:text="Email"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp" />
+                    android:layout_height="wrap_content">
 
-                <EditText
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_profile_email"
+                        android:hint="Email"
+                        android:textSize="14sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_email"
-                    android:id="@+id/edit_profile_email"
-                    android:hint="Enter your email"
-                    android:textSize="14sp"
-                    android:inputType="textEmailAddress"/>
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profile_phone"
-                    android:layout_below="@id/edit_profile_email"
-                    android:text="Phone number"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp" />
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edit_profile_phonenumber"
+                        android:hint="Phonenumber"
+                        android:textSize="14sp"/>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_phone"
-                    android:id="@+id/edit_profile_phone"
-                    android:hint="Phone number"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profile_sex"
-                    android:layout_below="@id/edit_profile_phone"
-                    android:text="Sex"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_marginStart="4dp"
-                    android:inputType="phone"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/profile_sex"
-                    android:id="@+id/edit_profile_sex"
-                    android:hint="Sex"
-                    android:textSize="14sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            </RelativeLayout>
+            </LinearLayout>
         </RelativeLayout>
 
     </ScrollView>

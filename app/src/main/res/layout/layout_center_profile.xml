@@ -32,7 +32,6 @@
                         android:layout_height="96dp"
                         android:layout_centerVertical="true"
                         android:padding="5dp"
-                        android:src="@mipmap/ic_launcher_round"
                         app:civ_border_color="@color/black"
                         app:civ_border_width="1dp" />
 
@@ -69,7 +68,6 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="2dp"
                     android:padding="2dp"
-                    android:text="Szymon Gryszko"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -81,7 +79,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:padding="2dp"
-                    android:text="Poland"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -93,7 +90,6 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginBottom="20dp"
                     android:padding="2dp"
-                    android:text="www.test.pl"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
