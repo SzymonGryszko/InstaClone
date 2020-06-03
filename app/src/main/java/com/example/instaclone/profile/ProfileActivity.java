@@ -201,10 +201,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 loadWidgetsWithDatabase(firebaseMethods.getUserAndAccountSettings(dataSnapshot));
-<<<<<<< HEAD
                 mProgressBar.setVisibility(View.GONE);
-=======
->>>>>>> a824b68785e5e791c013705f538b509bff66cee0
 
 
             }
