@@ -145,11 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(profileImage);
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> a824b68785e5e791c013705f538b509bff66cee0
     }
 
 
