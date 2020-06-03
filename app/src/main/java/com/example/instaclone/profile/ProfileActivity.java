@@ -45,6 +45,10 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MyApp";
 
     private FirebaseAuth mAuth;
+<<<<<<< HEAD
+=======
+    private FirebaseAuth.AuthStateListener mAuthListener;
+>>>>>>> a824b68785e5e791c013705f538b509bff66cee0
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
@@ -141,7 +145,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(profileImage);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> a824b68785e5e791c013705f538b509bff66cee0
     }
 
 
@@ -197,7 +205,10 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 loadWidgetsWithDatabase(firebaseMethods.getUserAndAccountSettings(dataSnapshot));
+<<<<<<< HEAD
                 mProgressBar.setVisibility(View.GONE);
+=======
+>>>>>>> a824b68785e5e791c013705f538b509bff66cee0
 
 
             }
