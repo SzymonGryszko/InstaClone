@@ -1,4 +1,4 @@
-package com.example.instaclone.utils;
+package com.example.instaclone.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -25,7 +25,7 @@ public class ExitDialog extends AppCompatDialogFragment {
         mAuth = FirebaseAuth.getInstance();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Exit?")
+        builder.setTitle("Exit")
                 .setMessage("Do you want to exit?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override

@@ -102,21 +102,6 @@ public class FirebaseMethods {
     }
 
 
-    public boolean checkIfUsernameExists(String username, DataSnapshot dataSnapshot) {
-
-        User user = new User();
-
-        for (DataSnapshot ds : dataSnapshot.child(userID).getChildren()) {
-            user.setUsername(ds.getValue(User.class).getUsername());
-            Log.d(TAG, "checkIfUsernameExists: " + user.getUsername());
-
-            if (StringManipulation.expandUsername(user.getUsername()).equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void registerNewEmail(String email, String password, String userName, final ProgressBar progressBar) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -194,6 +179,17 @@ public class FirebaseMethods {
                         }
                     }
                 });
+    }
+
+    public void updateUsername(String username){
+        Log.d(TAG, "updateUsername: updating username to " + username);
+
+        myRef.child(context.getString(R.string.dbname_users)).child(userID)
+                .child(context.getString(R.string.field_username)).setValue(username);
+
+        myRef.child(context.getString(R.string.dbname_user_account_settings)).child(userID)
+                .child(context.getString(R.string.field_username)).setValue(username);
+
     }
 
 }

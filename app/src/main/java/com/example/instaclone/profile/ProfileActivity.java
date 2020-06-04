@@ -20,16 +20,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
-import com.example.instaclone.model.User;
 import com.example.instaclone.model.UserAccountSettings;
 import com.example.instaclone.model.UserAndSettings;
 import com.example.instaclone.utils.BottomNavigationBarHelper;
 import com.example.instaclone.R;
-import com.example.instaclone.utils.ExitDialog;
+import com.example.instaclone.dialogs.ExitDialog;
 import com.example.instaclone.utils.FirebaseMethods;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseMethods firebaseMethods;
+    private String userID;
 
     private Context mContext = ProfileActivity.this;
     private DrawerLayout drawer;
@@ -62,10 +65,10 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        setupFirebaseAuth();
         initActivityWidgets();
         setBottomNavigationMenu();
         setupToolbar(drawer);
-        initFirebase();
         int viewPagerPosition = savedInstanceState == null ? 0 : savedInstanceState.getInt(STATE_POSITION);
         setViewPager(viewPagerPosition);
 
@@ -138,9 +141,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         CircleImageView profileImage = findViewById(R.id.profile_image);
         Picasso.get().load(settings.getProfile_photo().isEmpty() ? null : settings.getProfile_photo())
-                .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(profileImage);
+
+        mProgressBar.setVisibility(View.GONE);
 
     }
 
@@ -187,28 +191,58 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    private void initFirebase(){
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
-        final FirebaseMethods firebaseMethods = new FirebaseMethods(this);
+        firebaseMethods = new FirebaseMethods(this);
+        userID = mAuth.getCurrentUser().getUid();
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //retrieve user information from the database
                 loadWidgetsWithDatabase(firebaseMethods.getUserAndAccountSettings(dataSnapshot));
-                mProgressBar.setVisibility(View.GONE);
-
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-
-
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+
 }
