@@ -96,7 +96,7 @@ public class FirebaseMethods {
         User user = new User(userID, email, 0, StringManipulation.condenseUsername(username));
         myRef.child(context.getString(R.string.dbname_users)).child(userID).setValue(user);
 
-        UserAccountSettings settings = new UserAccountSettings(description, username, 0, 0, 0,profile_photo, StringManipulation.condenseUsername(username), website);
+        UserAccountSettings settings = new UserAccountSettings(description, username, 0, 0, 0, profile_photo, StringManipulation.condenseUsername(username), website);
         myRef.child(context.getString(R.string.dbname_user_account_settings)).child(userID).setValue(settings);
 
     }

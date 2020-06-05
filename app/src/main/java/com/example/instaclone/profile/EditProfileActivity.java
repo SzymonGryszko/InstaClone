@@ -144,7 +144,11 @@ public class EditProfileActivity extends AppCompatActivity implements ConfirmPas
             firebaseMethods.updateWebsite(website);
         }
 
+<<<<<<< HEAD
         if (mUserAndSettings.getUser().getPhone_number() != phoneNumber) {
+=======
+        if (mUserAndSettings.getSettings().getPhone_number() != phoneNumber) {
+>>>>>>> 1188d62e36e6e7f720cdae45bb7d6d22c764fab0
             firebaseMethods.updatePhoneNumber(phoneNumber);
         }
 
