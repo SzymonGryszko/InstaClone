@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,8 +18,13 @@ import com.example.instaclone.model.User;
 import com.example.instaclone.model.UserAccountSettings;
 import com.example.instaclone.model.UserAndSettings;
 import com.example.instaclone.utils.FirebaseMethods;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +35,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements ConfirmPasswordDialog.OnPasswordConfirmListener {
 
     private static final String TAG = "EditProfileActivity";
     private FirebaseAuth mAuth;
@@ -45,7 +48,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private UserAndSettings mUserAndSettings;
 
     private ImageView backArrow, saveChanges;
-    private EditText mFullName, mUsername, mWebsite, mBio, mEmail, mPhoneNumber;
+    private EditText mDisplayName, mUsername, mWebsite, mBio, mEmail, mPhoneNumber;
     private ProgressBar progressBar;
 
     @Override
@@ -83,7 +86,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.edit_profile_progressbar);
         progressBar.setVisibility(View.GONE);
-        mFullName = findViewById(R.id.edit_profile_name);
+        mDisplayName = findViewById(R.id.edit_profile_name);
         mUsername = findViewById(R.id.edit_profile_username);
         mWebsite = findViewById(R.id.edit_profile_website);
         mBio = findViewById(R.id.edit_profile_bio);
@@ -98,7 +101,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mUserAndSettings = userAndSettings;
 
-        mFullName.setText(settings.getDisplay_name());
+        mDisplayName.setText(settings.getDisplay_name());
         mUsername.setText(settings.getUsername());
         mWebsite.setText(settings.getWebsite());
         mBio.setText(settings.getDescription());
@@ -114,7 +117,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void saveProfileSettings() {
-        final String fullname = mFullName.getText().toString();
+        final String displayName = mDisplayName.getText().toString();
         final String username = mUsername.getText().toString();
         final String website = mWebsite.getText().toString();
         final String bio = mBio.getText().toString();
@@ -129,6 +132,23 @@ public class EditProfileActivity extends AppCompatActivity {
             dialog.show(getSupportFragmentManager(), getString(R.string.confirm_dialog_password));
         }
 
+        if (!mUserAndSettings.getSettings().getDisplay_name().equals(displayName)) {
+            firebaseMethods.updateDisplayName(displayName);
+        }
+
+        if (!mUserAndSettings.getSettings().getDescription().equals(bio)) {
+            firebaseMethods.updateDescription(bio);
+        }
+
+        if (!mUserAndSettings.getSettings().getWebsite().equals(website)) {
+            firebaseMethods.updateWebsite(website);
+        }
+
+        if (mUserAndSettings.getUser().getPhone_number() != phoneNumber) {
+            firebaseMethods.updatePhoneNumber(phoneNumber);
+        }
+
+        Toast.makeText(this, "Profile updated", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -158,6 +178,63 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onPasswordConfirm(String password) {
+        Log.d(TAG, "onPasswordConfirm: password: " + password);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+// Get auth credentials from the user for re-authentication. The example below shows
+// email and password credentials but there are multiple possible providers,
+// such as GoogleAuthProvider or FacebookAuthProvider.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(mAuth.getCurrentUser().getEmail(), password);
+
+// Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "User re-authenticated.");
+
+                        mAuth.fetchSignInMethodsForEmail(mEmail.getText().toString())
+                                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                                        boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+                                        try {
+                                            if (isNewUser) {
+                                                Log.e("TAG", "emial is not in use");
+
+                                                mAuth.getInstance().getCurrentUser().updateEmail(mEmail.getText().toString())
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Log.d(TAG, "User email address updated.");
+                                                                    Toast.makeText(EditProfileActivity.this, "Email updated", Toast.LENGTH_SHORT).show();
+                                                                    firebaseMethods.updateEmail(mEmail.getText().toString());
+                                                                }
+                                                            }
+                                                        });
+
+
+                                            } else {
+                                                Log.e("TAG", "emial alredy used");
+                                                Toast.makeText(EditProfileActivity.this, "Email already exists", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (NullPointerException e) {
+                                            e.getMessage();
+                                        }
+
+
+                                    }
+                                });
+
+                    }
+                });
     }
 
 

@@ -117,7 +117,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/edit_profile_email"
                         android:hint="Email"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        android:inputType="textEmailAddress"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,7 +131,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/edit_profile_phonenumber"
                         android:hint="Phonenumber"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        android:inputType="phone"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
