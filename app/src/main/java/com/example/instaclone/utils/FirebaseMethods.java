@@ -96,7 +96,7 @@ public class FirebaseMethods {
         User user = new User(userID, email, 0, StringManipulation.condenseUsername(username));
         myRef.child(context.getString(R.string.dbname_users)).child(userID).setValue(user);
 
-        UserAccountSettings settings = new UserAccountSettings(description, username, 0, 0, 0, profile_photo, StringManipulation.condenseUsername(username), website);
+        UserAccountSettings settings = new UserAccountSettings(description, username, 0, 0, 0, 0,profile_photo, StringManipulation.condenseUsername(username), website);
         myRef.child(context.getString(R.string.dbname_user_account_settings)).child(userID).setValue(settings);
 
     }
@@ -192,4 +192,28 @@ public class FirebaseMethods {
 
     }
 
+    public void updateDisplayName(String dispayName) {
+        myRef.child(context.getString(R.string.dbname_user_account_settings)).child(userID)
+                .child(context.getString(R.string.field_display_name)).setValue(dispayName);
+    }
+
+    public void updateWebsite(String website) {
+        myRef.child(context.getString(R.string.dbname_user_account_settings)).child(userID)
+                .child(context.getString(R.string.field_website)).setValue(website);
+    }
+
+    public void updateDescription(String bio) {
+        myRef.child(context.getString(R.string.dbname_user_account_settings)).child(userID)
+                .child(context.getString(R.string.field_description)).setValue(bio);
+    }
+
+    public void updatePhoneNumber(long phoneNumber) {
+        myRef.child(context.getString(R.string.dbname_users)).child(userID)
+                .child(context.getString(R.string.field_phone_number)).setValue(phoneNumber);
+    }
+
+    public void updateEmail(String email) {
+        myRef.child(context.getString(R.string.dbname_users)).child(userID)
+                .child(context.getString(R.string.field_email)).setValue(email);
+    }
 }

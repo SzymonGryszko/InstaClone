@@ -7,16 +7,18 @@ public class UserAccountSettings {
     private long followers;
     private long following;
     private long posts;
+    private long phone_number;
     private String profile_photo;
     private String username;
     private String website;
 
-    public UserAccountSettings(String description, String display_name, long followers, long following, long posts, String profile_photo, String username, String website) {
+    public UserAccountSettings(String description, String display_name, long followers, long following, long posts, long phone_number, String profile_photo, String username, String website) {
         this.description = description;
         this.display_name = display_name;
         this.followers = followers;
         this.following = following;
         this.posts = posts;
+        this.phone_number = phone_number;
         this.profile_photo = profile_photo;
         this.username = username;
         this.website = website;
@@ -64,6 +66,14 @@ public class UserAccountSettings {
 
     public void setPosts(long posts) {
         this.posts = posts;
+    }
+
+    public long getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(long phone_number) {
+        this.phone_number = phone_number;
     }
 
     public String getProfile_photo() {
